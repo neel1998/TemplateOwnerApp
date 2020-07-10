@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
                 Network.clearUserData(this);
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
+            case R.id.menu_add_item:
+                startActivity(new Intent(MainActivity.this, AddNewItemActivity.class));
+                break;
             default:
                 break;
         }

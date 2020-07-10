@@ -16,7 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.abc.templateownerapp.LoginActivity;
 import com.abc.templateownerapp.Model.Item;
-import com.abc.templateownerapp.Model.ItemsTask;
+import com.abc.templateownerapp.Model.MainTask;
 import com.abc.templateownerapp.R;
 import com.abc.templateownerapp.utils.ItemsAdapter;
 import com.abc.templateownerapp.utils.callback;
@@ -49,7 +49,7 @@ public class ItemsFragment extends Fragment {
 
     private void getItemsData() {
         swipeRefreshLayout.setRefreshing(true);
-        ItemsTask.getData(getContext(), new callback<String>() {
+        MainTask.getData(getContext(), "app/getItems", new callback<String>() {
             @Override
             public void onSucess(String s) {
                 swipeRefreshLayout.setRefreshing(false);
