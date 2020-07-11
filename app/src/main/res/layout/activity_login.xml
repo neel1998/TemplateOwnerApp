@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="10dp"
-        android:text="Loing"
+        android:text="Login"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/password"
         android:backgroundTint="@color/colorPrimary"
