@@ -1,7 +1,7 @@
 package com.abc.templateownerapp.utils;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +9,12 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.util.Pair;
 
+import com.abc.templateownerapp.MainActivity;
+import com.abc.templateownerapp.Model.MainTask;
 import com.abc.templateownerapp.R;
 
 import org.json.JSONArray;
@@ -19,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class OrdersAdapter extends BaseExpandableListAdapter {
@@ -102,12 +106,32 @@ public class OrdersAdapter extends BaseExpandableListAdapter {
                 deliverButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        progressBar.setVisibility(View.VISIBLE);
                         try {
-                            Log.d("Order Id", object.getInt("id") + "");
+                            JSONObject body = new JSONObject();
+                            Calendar calendar = Calendar.getInstance();
+                            String date = calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.YEAR);
+                            body.put("id", String.valueOf(object.getInt("id")));
+                            body.put("delivered_on", date);
+
+                            MainTask.deliverOrder(mContext, body, new callback<String>() {
+                                @Override
+                                public void onSucess(String s) {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(mContext, "Ordered Delivered", Toast.LENGTH_SHORT).show();
+                                    mContext.startActivity(new Intent(mContext, MainActivity.class));
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(mContext, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+//                            Log.d("Order Id", object.getInt("id") + "");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        progressBar.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -116,21 +140,21 @@ public class OrdersAdapter extends BaseExpandableListAdapter {
                 view.findViewById(R.id.order_delivered_on_tv).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.order_list_layout).setBackgroundColor(mContext.getResources().getColor(R.color.colorCompletedOrderBg));
                 view.findViewById(R.id.deliver_order_btn).setVisibility(View.GONE);
-                ((TextView)view.findViewById(R.id.order_delivered_on_tv)).setText(object.getString("delivered_on"));
+                ((TextView) view.findViewById(R.id.order_delivered_on_tv)).setText(object.getString("delivered_on"));
             }
-            ((TextView)view.findViewById(R.id.order_id_tv)).setText(String.valueOf(object.getInt("id")));
-            ((TextView)view.findViewById(R.id.order_user_tv)).setText(String.valueOf(object.getInt("userID")));
-            ((TextView)view.findViewById(R.id.order_amnt_tv)).setText(object.getString("total_amnt"));
-            ((TextView)view.findViewById(R.id.order_date_tv)).setText(object.getString("date"));
-            ((TextView)view.findViewById(R.id.order_address_tv)).setText(object.getString("address"));
-            ((TextView)view.findViewById(R.id.order_contact_tv)).setText(object.getString("contact"));
+            ((TextView) view.findViewById(R.id.order_id_tv)).setText(String.valueOf(object.getInt("id")));
+            ((TextView) view.findViewById(R.id.order_user_tv)).setText(String.valueOf(object.getInt("userID")));
+            ((TextView) view.findViewById(R.id.order_amnt_tv)).setText(object.getString("total_amnt"));
+            ((TextView) view.findViewById(R.id.order_date_tv)).setText(object.getString("date"));
+            ((TextView) view.findViewById(R.id.order_address_tv)).setText(object.getString("address"));
+            ((TextView) view.findViewById(R.id.order_contact_tv)).setText(object.getString("contact"));
             JSONArray items = new JSONArray(object.getString("items"));
             String itemsString = "";
-            for (int i = 0; i < items.length(); i ++) {
+            for (int i = 0; i < items.length(); i++) {
                 JSONObject itemObject = items.getJSONObject(i);
                 itemsString += itemObject.getString("qty") + " x " + itemObject.getString("name") + ", ";
             }
-            ((TextView)view.findViewById(R.id.order_items_tv)).setText(itemsString);
+            ((TextView) view.findViewById(R.id.order_items_tv)).setText(itemsString);
 
 
         } catch (JSONException e) {

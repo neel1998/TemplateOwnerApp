@@ -110,4 +110,51 @@ public class MainTask {
         }
     }
 
+    public static void deliverOrder(Context context, JSONObject body, final callback<String> cb) {
+        DeliverOrderTask deliverOrderTask =  new DeliverOrderTask() {
+            @Override
+            protected void onPostExecute(AsyncTaskResult<NetworkResponse> asyncTaskResult) {
+                if (asyncTaskResult.isError()) {
+                    cb.onError(asyncTaskResult.getError());
+                } else {
+                    NetworkResponse response = asyncTaskResult.getResult();
+                    Log.d("res", response.getResponseString());
+                    if (response.getResponseCode() == 200) {
+                        cb.onSucess(response.getResponseString());
+                    } else {
+                        cb.onError(new Exception("404"));
+                    }
+                }
+            }
+        };
+        deliverOrderTask.execute(new Pair<Context, JSONObject>(context, body));
+    }
+
+    public static class DeliverOrderTask extends AsyncTask<Pair<Context, JSONObject>, Void, AsyncTaskResult<NetworkResponse>> {
+
+        @Override
+        protected AsyncTaskResult<NetworkResponse> doInBackground(Pair<Context, JSONObject>... data) {
+            Context context = data[0].first;
+            JSONObject jsonObject = data[0].second;
+            try {
+                NetworkResponse tokenResponse = Network.verifyToken(User.getUserInstance().getToken());
+                if (tokenResponse.getResponseCode() != 200) {
+                    return  new AsyncTaskResult<>(new Exception("Invalid Token"));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+                RequestBody body = RequestBody.create(JSON, jsonObject.toString());
+                NetworkResponse response = Network.makeCall("app/deliverOrder", body, Network.getAppId(context));
+                return new AsyncTaskResult<>(response);
+            } catch (IOException  e) {
+                e.printStackTrace();
+                return new AsyncTaskResult<>(e);
+            }
+        }
+    }
+
+
 }

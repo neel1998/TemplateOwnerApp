@@ -7,6 +7,6 @@
         android:title="Logout" />
     <item
         android:id="@+id/menu_add_item"
-        app:showAsAction="never"
+        app:showAsAction="always"
         android:title="Add new Item"/>
 </menu>
