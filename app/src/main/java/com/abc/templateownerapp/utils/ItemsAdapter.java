@@ -40,8 +40,8 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
 
         ((TextView)view.findViewById(R.id.item_name)).setText(item.getItemName());
         ((TextView)view.findViewById(R.id.item_description)).setText(item.getItemDescription());
-        ((TextView)view.findViewById(R.id.item_price)).setText(item.getItemPrice());
-        ((TextView)view.findViewById(R.id.item_stock)).setText(String.valueOf(item.getItemStock()));
+        ((TextView)view.findViewById(R.id.item_price)).setText("Price: " + item.getItemPrice());
+        ((TextView)view.findViewById(R.id.item_stock)).setText("Stock: " + String.valueOf(item.getItemStock()));
 
         ImageView imageView = view.findViewById(R.id.item_image);
         Picasso.get().load(item.getImageURL()).into(imageView);
