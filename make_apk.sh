@@ -12,6 +12,8 @@ sed -i "$appName" $mainPath/app/src/main/res/values/strings.xml
 id='7s/.*/        applicationId "com.abc.'$2'"/'
 sed -i "$id" $mainPath/app/build.gradle
 
-bash $mainPath/gradlew assembleDebug
+cd $mainPath
+./gradlew assembleDebug
+cd -
 
 mv $mainPath/app/build/outputs/apk/debug/app-debug.apk $mainPath/app/build/outputs/apk/debug/$2.apk
