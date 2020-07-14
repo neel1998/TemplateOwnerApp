@@ -12,6 +12,14 @@ sed -i "$appName" $mainPath/app/src/main/res/values/strings.xml
 id='7s/.*/        applicationId "com.abc.'$2'"/'
 sed -i "$id" $mainPath/app/build.gradle
 
+colorPrimary='3s|.*|<color name="colorPrimary">'$3'</color>|'
+colorDark='4s|.*|<color name="colorPrimaryDark">'$4'</color>|'
+colorAccent='5s|.*|<color name="colorAccent">'$5'</color>|'
+
+sed -i "$colorPrimary" $mainPath/app/src/main/res/values/colors.xml
+sed -i "$colorDark" $mainPath/app/src/main/res/values/colors.xml
+sed -i "$colorAccent" $mainPath/app/src/main/res/values/colors.xml
+
 cd $mainPath
 ./gradlew assembleDebug
 cd -
