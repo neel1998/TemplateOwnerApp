@@ -1,8 +1,22 @@
 #!/bin/bash
-mainPath=/home/neel/AndroidStudioProjects/TemplateOwnerApp
+mainPath=/home/ubuntu/TemplateOwnerApp
+
+#JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+#export JAVA_HOME
+
+#PATH=$PATH:$JAVA_HOME
+#export PATH
+
+#ANDROID_HOME=/usr/lib/android-sdk/
+#export ANDROID_HOME
+
+#PATH=$PATH:$ANDROID_HOME
+#export PATH
+
+#PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin
+#export PATH
 
 p=$mainPath/app/src/main/assets/meta_data.txt
-#echo $p
 echo $1 > $p
 
 appName='2s|.*|<string name="app_name">'$2'</string>|'
