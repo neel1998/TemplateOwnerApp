@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TemplateOwnerApp</string>
+<string name="app_name">try3_owner</string>
     <string name="tab_text_1">Items</string>
     <string name="tab_text_2">Orders</string>
     <string name="tab_text_3">Users</string>

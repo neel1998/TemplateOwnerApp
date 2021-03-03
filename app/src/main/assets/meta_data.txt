@@ -1,1 +1,1 @@
-{"appId":"myMed_1"}
+{"appId":"try3_1"}
